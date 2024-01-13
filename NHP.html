@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Personal Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<div class="dashboard">
+    <h1 style="color: white;">Hi Itz me NESHWAN 👋 </h1>
+
+    <div class="profile">
+        <img src="nshwn.jpg" alt="Profile Picture" style="border-radius: 50%; width: 150px; height: 150px;">
+        <h2 style="color: white;">NESHWAN PK</h2>
+        <p style="color: white;">Im Neshwan Pk from a place called wandoor in INDIA.</p>
+        <p style="color: white;">Im a coder and a web-dev</p>
+        <p style="color: white;">Likes to play games and want to be a good person one day</p>
+        <p style="color: white;">Remember what ALLAH said: "fear allah not his creation"</p>
+    </div>
+
+    <div class="social-media">
+        <h2 style="color: white;">Social Media</h2>
+        <ul id="socialMediaLinks">
+            <!-- Add your social media links and icons here -->
+            <li><a href="https://twitter.com/NESHWAN_PK" target="_blank" style="color: white;"><i class="fab fa-twitter"></i> Twitter</a></li>
+            <li><a href="https://www.instagram.com/tht.nshwn/" target="_blank" style="color: white;"><i class="fab fa-instagram"></i> Instagram</a></li>
+            <li><a href="https://www.threads.net/@tht.nshwn" target="_blank" style="color: white;"><i class="fab fa-threads"></i> threads</a></li>
+            <!-- Add more social media links as needed -->
+        </ul>
+    </div>
+
+    <div class="view-counter">
+        <h2 style="color: white;">Views</h2>
+        <p id="viewCount" style="color: white;">Loading...</p>
+    </div>
+
+    <div class="additional-box">
+        <h2 style="color: white;">Additional Information</h2>
+        <div>
+            <button onclick="shareWebsite()" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;">Share Website</button>
+            <button onclick="showSupportPopup()" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;">Support</button>
+        </div>
+        <div id="qrCodeContainer">
+            <!-- QR code will be generated and displayed here -->
+        </div>
+    </div>
+</div>
+
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <span class="close" onclick="closePopup()" style="color: white;">&times;</span>
+        <h2 style="color: white;">Welcome!</h2>
+        <p style="color: white;">Please enter your name for verification:</p>
+        <input type="text" id="visitorName" placeholder="Your Name">
+        <button onclick="verifyName()" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;">Verify</button>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #2e2e2e;
+        color: white;
+    }
+
+    .dashboard {
+        display: grid;
+        grid-template-columns: 1fr; /* Single column layout */
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #575656;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        gap: 20px;
+    }
+
+    .profile img {
+        margin-bottom: 20px;
+    }
+
+    .social-media h2 {
+        margin-bottom: 10px;
+    }
+
+    .social-media ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column; /* Display social media links in a vertical manner */
+        gap: 10px;
+    }
+
+    .social-media li {
+        font-size: 18px;
+    }
+
+    .view-counter {
+        margin-top: 30px;
+    }
+
+    .additional-box {
+        margin-top: 30px;
+    }
+
+    .additional-box h2 {
+        margin-bottom: 10px;
+    }
+
+    .additional-box button {
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    /* Popup styles */
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+    }
+
+    .popup-content {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    // Get the current view count from local storage or set it to 0 if not present
+    let viewCount = localStorage.getItem('viewCount') || 0;
+    let viewCountElement = document.getElementById('viewCount');
+
+    function updateViewCounter() {
+        viewCount++;
+        viewCountElement.textContent = `Views: ${viewCount}`;
+
+        // Update the view count in local storage
+        localStorage.setItem('viewCount', viewCount);
+    }
+
+    // Check if the name verification popup has been shown
+    if (!localStorage.getItem('nameVerified')) {
+        // Show the popup if not verified
+        document.getElementById('popup').style.display = 'flex';
+    }
+
+    function verifyName() {
+        // Get the entered name
+        let visitorName = document.getElementById('visitorName').value;
+
+        if (visitorName.trim() !== '') {
+            // Store the verified name in local storage
+            localStorage.setItem('visitorName', visitorName);
+
+            // Mark the name as verified
+            localStorage.setItem('nameVerified', true);
+
+            // Close the popup
+            closePopup();
+        } else {
+            alert('Please enter a valid name.');
+        }
+    }
+
+    function closePopup() {
+        document.getElementById('popup').style.display = 'none';
+    }
+
+    function shareWebsite() {
+        // Implement the logic to share the website (e.g., open a share dialog)
+        let shareText = 'Check out NESHWAN PK\'s Personal Dashboard: [insert your website link here]';
+        if (navigator.share) {
+            navigator.share({
+                title: 'NESHWAN PK\'s Dashboard',
+                text: shareText,
+                url: window.location.href,
+            })
+            .then(() => console.log('Shared successfully'))
+            .catch((error) => console.error('Error sharing:', error));
+        } else {
+            alert('Web Share API is not supported in this browser. You can manually copy the link and share it.');
+        }
+    }
+
+    function showSupportPopup() {
+        // Implement the logic to show the support popup
+        let supportEmail = prompt('Please enter your support request or inquiry:');
+        if (supportEmail !== null && supportEmail.trim() !== '') {
+            // Assuming you have a backend to handle support emails, you can send the email there
+            alert('Your support request has been submitted. Thank you!');
+        } else {
+            alert('Support request cannot be empty. Please try again.');
+        }
+    }
+
+    // Update the view counter when the page is loaded
+    updateViewCounter();
+</script>
+
+</body>
+</html>
